@@ -2,40 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@page import="vo.Card"%>
 <%
-	/*
-	블랙잭 알고리즘
-	
-	int sum = 0;
-	int oneCount = 0; // 1의 횟수가 아니고 1을 11로 치환한 횟수
-	for(int i = 0; i < num.length; i = i + 1) { // i++;
-		if(num[i] == 1) {
-			oneCount = oneCount + 1; // oneCount++;
-			sum = sum + 11;
-		} else if(num[i] > 10) {
-			sum = sum + 10; // 11, 12, 13인 경우는 10으로 합산한다.
-		} else {
-			sum = sum + num[i];
-		}
-		
-		if(i == 1 && sum >= 21) { // 2번째 조건식
-			if(oneCount > 0) {
-				sum = sum - 10;
-				oneCount = oneCount - 1; // oneCount--;
-			}
-		} else if(i == 2 && sum > 21) { // 3번째 조건식
-			if(oneCount > 0) {
-				sum = sum - 10;
-				oneCount = oneCount - 1; // oneCount--;
-			}
-		}
-		System.out.println(sum + " <-- for>sum");
-	}
-	
-	System.out.println(sum + " <-- sum");
-	
-	*/
-	
-
 	// 1) 52장의 카드를 생성
 	Card[] cards = null;
 	cards = new Card[52];
@@ -54,18 +20,6 @@
 		} else if(i / 13 == 3) {
 			cards[i].kind = "clover"; // 39 ~ 52는 13으로 나눴을 때 몫이 3
 		}
-		
-		/*
-		if(i < 13) {
-			cards[i].kind = "spade";
-		} else if(i < 26) {
-			cards[i].kind = "diamond";
-		} else if(i < 39) {
-			cards[i].kind = "heart";
-		} else {
-			cards[i].kind = "clover";
-		}
-		*/
 	}
 	
 	// 디버깅
@@ -109,9 +63,41 @@
 	// 21을 넘지 않으면 21에 가까운 참가자가 승리
 	
 	int p1Sum = 0; 
-	int p2Sum = 0;
-	p1Sum = p1[0].num + p1[1].num + p1[2].num;
-	p2Sum = p2[0].num + p2[1].num + p2[2].num;
+	int p2Sum = 0;	
+	
+	// 적용한 블랙잭 1카드 알고리즘
+
+	int oneCount = 0; // 1의 횟수가 아니고 1을 11로 치환한 횟수
+	for(int i = 0; i < p1.length; i = i + 1) {
+		if(p1[i].num == 1) {
+			oneCount = oneCount + 1; 
+			p1Sum = p1Sum + 11;
+		} else if(p1[i].num > 10) {
+			p1Sum = p1Sum + 10; // 11, 12, 13인 경우는 10으로 합산한다.
+		} else {
+			p1Sum = p1Sum + p1[i].num;
+		}
+		
+		if(i == 1 && p1Sum >= 21) { // 2번째 조건식
+			if(oneCount > 0) {
+				p1Sum = p1Sum - 10;
+				oneCount = oneCount - 1; // oneCount--;
+			}
+		} else if(i == 2 && p1Sum > 21) { // 3번째 조건식
+			if(oneCount > 0) {
+				p1Sum = p1Sum - 10;
+				oneCount = oneCount - 1; // oneCount--;
+			}
+		}
+		System.out.println(p1Sum + " <-- for>sum");
+	}
+	
+	System.out.println(p1Sum + " <-- sum");
+	
+	
+	
+	/*
+	// 내가 한 블랙잭 1카드 알고리즘, 11~13카드
 	
 	for(int i=0; i<CARD_COUNT; i=i+1) { // 나눠준 카드에서 11 ~ 13이 있을 경우 합의 숫자만 10으로 바꾸기
 		if(p1[i].num == 11) {
@@ -129,6 +115,8 @@
 			p2Sum = p2Sum - 3;
 		}
 	}
+	
+	
 	for(int i=0; i<CARD_COUNT; i=i+1) { // 1카드 11만들기
 		if(p1Sum < 21) {
 			if(p1[i].num == 1) {
@@ -141,7 +129,7 @@
 			}
 		}
 	}
-	/*
+	
 	for(int i=0; i<CARD_COUNT; i=i+1) { // A카드가 11로 했을 때 21이상이면 1로 계산
 		if(p1Sum >= 21) {
 			if(p1[i].num == 1) {
@@ -154,7 +142,7 @@
 			}
 		}
 	}
-	*/
+	*/	
 
 	String result = "";
 	if(p1Sum <= 21) {
